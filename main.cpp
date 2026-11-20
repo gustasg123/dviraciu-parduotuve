@@ -183,6 +183,37 @@ void perziuretiUzsakymoSumas (double vienetoKainos[], int uzsakytiKiekiai[], int
     cout << "Galutine uzsakymo suma po nuolaidos: " << galutineSuma << " Eur." << endl;
 }
 
+double kategorijosSuma (string kategorijos[], double vienetoKainos[], int uzsakytiKiekiai[], int prekiuSkaicius, string pasirinktaKategorija)
+{
+    double suma = 0;
+
+    for (int i = 0; i < prekiuSkaicius; i++)
+    {
+        if (kategorijos[i] == pasirinktaKategorija)
+        {
+            double eilute = eilutesSuma(vienetoKainos[i], uzsakytiKiekiai[i]);
+            double nuolaida = apskaiciuotiNuolaida(eilute, uzsakytiKiekiai[i]);
+
+            suma += eilute - nuolaida;
+        }
+    } 
+    
+    return suma;
+
+}
+
+void perziuretiKategorijosSumas (string kategorijos[], double vienetoKainos[], int uzsakytiKiekiai[], int prekiuSkaicius)
+{
+    double dviraciai = kategorijosSuma(kategorijos, vienetoKainos, uzsakytiKiekiai, prekiuSkaicius, "Dviraciai");
+    double dalys = kategorijosSuma(kategorijos, vienetoKainos, uzsakytiKiekiai, prekiuSkaicius, "Dalys");
+    double aksesuarai = kategorijosSuma(kategorijos, vienetoKainos, uzsakytiKiekiai, prekiuSkaicius, "Aksesuarai");
+
+    cout << fixed << setprecision(2);
+    cout << "Dviraciu galutine suma: " << dviraciai << " Eur." << endl;
+    cout << "Daliu galutine suma: " << dalys << " Eur." << endl;
+    cout << "Aksesuaru galutine suma: " << aksesuarai << " Eur." << endl;
+}
+
 void rodytiMeniu()
 {
     cout << "\n========== DVIRACIU PARDUOTUVE ==========\n"
@@ -202,7 +233,7 @@ int main ()
 
     if (!nuskaitytiDuomenis(kategorijos,prekiuPavadinimai,vienetoKainos,uzsakytiKiekiai,prekiuSkaicius))
     {
-        cout << "Nepavyko nuskaityti duomenu!" << endl;
+        cout << "Klaida: Nepavyko nuskaityti duomenu!" << endl;
         return 1;
     }
 
@@ -230,7 +261,7 @@ int main ()
             break;
 
             case 4:
-            cout << "4.\n";
+            perziuretiKategorijosSumas(kategorijos,vienetoKainos,uzsakytiKiekiai,prekiuSkaicius);
             break;
 
             case 5:
