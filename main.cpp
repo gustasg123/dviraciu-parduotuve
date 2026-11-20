@@ -4,12 +4,6 @@
 #include <string>
 using namespace std;
 
-string kategorijos[100];
-string prekiuPavadinimai[100];
-double vienetoKainos[100];
-int uzsakytiKiekiai[100];
-int prekiuSkaicius;
-
 bool nuskaitytiDuomenis(string kategorijos[], string prekiuPavadinimai[], double vienetoKainos[], int uzsakytiKiekiai[], int &prekiuSkaicius) 
 {
 
@@ -275,7 +269,7 @@ void parodytiUzsakymoAtaskaita (ostream& isvestis, string kategorijos[], string 
                                 prekiuSkaicius);
 }
 
-void IssaugotiFaila ()
+void IssaugotiFaila (string kategorijos[], string prekiuPavadinimai[], double vienetoKainos[], int uzsakytiKiekiai[], int prekiuSkaicius)
 {
     ofstream ataskaita("ataskaita.txt");
 
@@ -289,13 +283,14 @@ void IssaugotiFaila ()
 
     ataskaita.close();
 
-    if (!ataskaita)
+    if (ataskaita.good())
     {
-        cout << "Klaida: Nepavyko išsaugoti ataskaitos failo!" << endl;
-        return;
+        cout << "Ataskaita issaugota!" << endl;
     }
-
-    cout << "Ataskaita issaugota faile ataskaita.txt!" << endl;
+    else
+    {
+        cout << "Klaida issaugant ataskaita!" << endl;
+    }
 }
 
 void rodytiMeniu()
@@ -313,6 +308,12 @@ void rodytiMeniu()
 
 int main () 
 {   
+    string kategorijos[100];
+    string prekiuPavadinimai[100];
+    double vienetoKainos[100];
+    int uzsakytiKiekiai[100];
+
+    int prekiuSkaicius = 0;
     int pasirinkimas;
 
     if (!nuskaitytiDuomenis(kategorijos,prekiuPavadinimai,vienetoKainos,uzsakytiKiekiai,prekiuSkaicius))
@@ -326,6 +327,7 @@ int main ()
 
         cout << "Pasirinkite veiksma (1-7): ";
         cin >> pasirinkimas;
+        
         cout << endl;
 
         switch (pasirinkimas) {
@@ -353,7 +355,7 @@ int main ()
             break;
 
             case 6:
-            IssaugotiFaila();
+            IssaugotiFaila(kategorijos, prekiuPavadinimai, vienetoKainos, uzsakytiKiekiai, prekiuSkaicius);
             break;
 
             case 7:
