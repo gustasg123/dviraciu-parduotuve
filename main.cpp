@@ -160,7 +160,7 @@ double apskaiciuotiNuolaida(double eilutesSuma, int uzsakytiKiekiai)
     return 0;
 }
 
-void perziuretiUzsakymoSumas (double vienetoKainos[], int uzsakytiKiekiai[], int prekiuSkaicius)
+void perziuretiUzsakymoSumas (ostream& isvestis, double vienetoKainos[], int uzsakytiKiekiai[], int prekiuSkaicius)
 {
     double bendraSuma = 0;
     double bendraNuolaida = 0;
@@ -177,10 +177,10 @@ void perziuretiUzsakymoSumas (double vienetoKainos[], int uzsakytiKiekiai[], int
 
     double galutineSuma = bendraSuma - bendraNuolaida;
 
-    cout << fixed << setprecision(2);
-    cout << "Bendra uzsakymo suma: " << bendraSuma << " Eur." << endl;
-    cout << "Bendra nuolaida: " << bendraNuolaida << " Eur." << endl;
-    cout << "Galutine uzsakymo suma po nuolaidos: " << galutineSuma << " Eur." << endl;
+    isvestis << fixed << setprecision(2);
+    isvestis << "Bendra uzsakymo suma: " << bendraSuma << " Eur." << endl;
+    isvestis << "Bendra nuolaida: " << bendraNuolaida << " Eur." << endl;
+    isvestis << "Galutine uzsakymo suma po nuolaidos: " << galutineSuma << " Eur." << endl;
 }
 
 double kategorijosSuma (string kategorijos[], double vienetoKainos[], int uzsakytiKiekiai[], int prekiuSkaicius, string pasirinktaKategorija)
@@ -202,42 +202,65 @@ double kategorijosSuma (string kategorijos[], double vienetoKainos[], int uzsaky
 
 }
 
-void perziuretiKategorijosSumas (string kategorijos[], double vienetoKainos[], int uzsakytiKiekiai[], int prekiuSkaicius)
+void perziuretiKategorijosSumas (ostream& isvestis, string kategorijos[], double vienetoKainos[], int uzsakytiKiekiai[], int prekiuSkaicius)
 {
     double dviraciai = kategorijosSuma(kategorijos, vienetoKainos, uzsakytiKiekiai, prekiuSkaicius, "Dviraciai");
     double dalys = kategorijosSuma(kategorijos, vienetoKainos, uzsakytiKiekiai, prekiuSkaicius, "Dalys");
     double aksesuarai = kategorijosSuma(kategorijos, vienetoKainos, uzsakytiKiekiai, prekiuSkaicius, "Aksesuarai");
 
-    cout << fixed << setprecision(2);
-    cout << "Dviraciu galutine suma: " << dviraciai << " Eur." << endl;
-    cout << "Daliu galutine suma: " << dalys << " Eur." << endl;
-    cout << "Aksesuaru galutine suma: " << aksesuarai << " Eur." << endl;
+    isvestis << fixed << setprecision(2);
+    isvestis << "Dviraciu galutine suma: " << dviraciai << " Eur." << endl;
+    isvestis << "Daliu galutine suma: " << dalys << " Eur." << endl;
+    isvestis << "Aksesuaru galutine suma: " << aksesuarai << " Eur." << endl;
 }
 
-void parodytiUzsakymoAtaskaita (string kategorijos[], string prekiuPavadinimai[], double vienetoKainos[], int uzsakytiKiekiai[], int prekiuSkaicius)
+void parodytiUzsakymoAtaskaita (ostream& isvestis, string kategorijos[], string prekiuPavadinimai[], double vienetoKainos[], int uzsakytiKiekiai[], int prekiuSkaicius)
 {
-    cout << fixed << setprecision(2);
+    isvestis << fixed << setprecision(2);
 
     for (int i = 0; i < prekiuSkaicius; i++)
     {
-        cout << "PREKES NR. " << i + 1 << endl;
-        cout << "Kategorija: " << kategorijos[i] << endl;
-        cout << "Pavadinimas: " << prekiuPavadinimai[i] << endl;
-        cout << "Vieneto kaina: " << vienetoKainos[i] << " Eur." << endl;
-        cout << "Uzsakytas kiekis: " << uzsakytiKiekiai[i] << endl;
+        isvestis << "PREKES NR. " << i + 1 << endl;
+        isvestis << "Kategorija: " << kategorijos[i] << endl;
+        isvestis << "Pavadinimas: " << prekiuPavadinimai[i] << endl;
+        isvestis << "Vieneto kaina: " << vienetoKainos[i] << " Eur." << endl;
+        isvestis << "Uzsakytas kiekis: " << uzsakytiKiekiai[i] << endl;
         double suma = eilutesSuma(vienetoKainos[i],uzsakytiKiekiai[i]);
-        cout << "Eilutes suma: " << suma << " Eur." << endl;
+        isvestis << "Eilutes suma: " << suma << " Eur." << endl;
         double nuolaida = apskaiciuotiNuolaida(suma,uzsakytiKiekiai[i]);
-        cout << "Pritaikyta nuolaida: " << nuolaida << " Eur." << endl;
-        cout << "Galutine suma: " << suma - nuolaida << " Eur." << endl;
-        cout << "------------------------" << endl;
+        isvestis << "Pritaikyta nuolaida: " << nuolaida << " Eur." << endl;
+        isvestis << "Galutine suma: " << suma - nuolaida << " Eur." << endl;
+        isvestis << "------------------------" << endl;
     }
 
-        cout << "Bendra uzsakymo suvestine:" << endl;
-        perziuretiUzsakymoSumas(vienetoKainos, uzsakytiKiekiai, prekiuSkaicius);
-        cout << "------------------------" << endl;
-        cout << "Sumos pagal kategorijas:" << endl;
-        perziuretiKategorijosSumas(kategorijos, vienetoKainos, uzsakytiKiekiai, prekiuSkaicius);
+        isvestis << "Bendra uzsakymo suvestine:" << endl;
+        perziuretiUzsakymoSumas(isvestis, vienetoKainos, uzsakytiKiekiai, prekiuSkaicius);
+        isvestis << "------------------------" << endl;
+        isvestis << "Sumos pagal kategorijas:" << endl;
+        perziuretiKategorijosSumas(isvestis, kategorijos, vienetoKainos, uzsakytiKiekiai, prekiuSkaicius);
+}
+
+void IssaugotiFaila ()
+{
+    ofstream ataskaita("ataskaita.txt");
+
+    if (!ataskaita.is_open())
+    {
+        cout << "Klaida: Nepavyko sukurti ataskaitos failo!" << endl;
+        return;
+    }
+
+    parodytiUzsakymoAtaskaita(ataskaita, kategorijos, prekiuPavadinimai, vienetoKainos, uzsakytiKiekiai, prekiuSkaicius);
+
+    ataskaita.close();
+
+    if (!ataskaita)
+    {
+        cout << "Klaida: Nepavyko išsaugoti ataskaitos failo!" << endl;
+        return;
+    }
+
+    cout << "Ataskaita issaugota faile ataskaita.txt!" << endl;
 }
 
 void rodytiMeniu()
@@ -283,19 +306,19 @@ int main ()
             }
 
             case 3:
-            perziuretiUzsakymoSumas(vienetoKainos, uzsakytiKiekiai, prekiuSkaicius);
+            perziuretiUzsakymoSumas(cout, vienetoKainos, uzsakytiKiekiai, prekiuSkaicius);
             break;
 
             case 4:
-            perziuretiKategorijosSumas(kategorijos,vienetoKainos,uzsakytiKiekiai,prekiuSkaicius);
+            perziuretiKategorijosSumas(cout, kategorijos,vienetoKainos,uzsakytiKiekiai,prekiuSkaicius);
             break;
 
             case 5:
-            parodytiUzsakymoAtaskaita(kategorijos, prekiuPavadinimai, vienetoKainos, uzsakytiKiekiai, prekiuSkaicius);
+            parodytiUzsakymoAtaskaita(cout, kategorijos, prekiuPavadinimai, vienetoKainos, uzsakytiKiekiai, prekiuSkaicius);
             break;
 
             case 6:
-            cout << "6.\n";
+            IssaugotiFaila();
             break;
 
             case 7:
