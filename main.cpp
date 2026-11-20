@@ -177,10 +177,17 @@ void perziuretiUzsakymoSumas (ostream& isvestis, double vienetoKainos[], int uzs
 
     double galutineSuma = bendraSuma - bendraNuolaida;
 
-    isvestis << fixed << setprecision(2);
-    isvestis << "Bendra uzsakymo suma: " << bendraSuma << " Eur." << endl;
-    isvestis << "Bendra nuolaida: " << bendraNuolaida << " Eur." << endl;
-    isvestis << "Galutine uzsakymo suma po nuolaidos: " << galutineSuma << " Eur." << endl;
+        isvestis << fixed << setprecision(2);
+
+        isvestis << left << setw(30) << "Uzsakymo suma:"
+                << right << setw(15) << bendraSuma << " Eur." << endl;
+
+        isvestis << left << setw(30) << "Nuolaida:"
+                << right << setw(15) << bendraNuolaida << " Eur." << endl;
+
+        isvestis << left << setw(30) << "Galutine suma:"
+                << right << setw(15) << galutineSuma << " Eur." << endl;
+
 }
 
 double kategorijosSuma (string kategorijos[], double vienetoKainos[], int uzsakytiKiekiai[], int prekiuSkaicius, string pasirinktaKategorija)
@@ -209,35 +216,63 @@ void perziuretiKategorijosSumas (ostream& isvestis, string kategorijos[], double
     double aksesuarai = kategorijosSuma(kategorijos, vienetoKainos, uzsakytiKiekiai, prekiuSkaicius, "Aksesuarai");
 
     isvestis << fixed << setprecision(2);
-    isvestis << "Dviraciu galutine suma: " << dviraciai << " Eur." << endl;
-    isvestis << "Daliu galutine suma: " << dalys << " Eur." << endl;
-    isvestis << "Aksesuaru galutine suma: " << aksesuarai << " Eur." << endl;
+
+    isvestis << left << setw(30) << "Dviraciai:"
+            << right << setw(15) << dviraciai << " Eur." << endl;
+
+    isvestis << left << setw(30) << "Dalys:"
+            << right << setw(15) << dalys << " Eur." << endl;
+
+    isvestis << left << setw(30) << "Aksesuarai:"
+            << right << setw(15) << aksesuarai << " Eur." << endl;
 }
 
 void parodytiUzsakymoAtaskaita (ostream& isvestis, string kategorijos[], string prekiuPavadinimai[], double vienetoKainos[], int uzsakytiKiekiai[], int prekiuSkaicius)
 {
     isvestis << fixed << setprecision(2);
 
+    isvestis << left
+             << setw(15) << "Kategorija"
+             << setw(55) << "Pavadinimas"
+             << right
+             << setw(12) << "Kaina"
+             << setw(10) << "Kiekis"
+             << setw(14) << "Suma"
+             << setw(14) << "Nuolaida"
+             << setw(14) << "Moketi" << endl;
+
+    isvestis << string(135,'-') << endl;
+
     for (int i = 0; i < prekiuSkaicius; i++)
     {
-        isvestis << "PREKES NR. " << i + 1 << endl;
-        isvestis << "Kategorija: " << kategorijos[i] << endl;
-        isvestis << "Pavadinimas: " << prekiuPavadinimai[i] << endl;
-        isvestis << "Vieneto kaina: " << vienetoKainos[i] << " Eur." << endl;
-        isvestis << "Uzsakytas kiekis: " << uzsakytiKiekiai[i] << endl;
         double suma = eilutesSuma(vienetoKainos[i],uzsakytiKiekiai[i]);
-        isvestis << "Eilutes suma: " << suma << " Eur." << endl;
         double nuolaida = apskaiciuotiNuolaida(suma,uzsakytiKiekiai[i]);
-        isvestis << "Pritaikyta nuolaida: " << nuolaida << " Eur." << endl;
-        isvestis << "Galutine suma: " << suma - nuolaida << " Eur." << endl;
-        isvestis << "------------------------" << endl;
+        double moketi = suma - nuolaida;
+
+        isvestis << left
+                 << setw(15) << kategorijos[i]
+                 << setw(55) << prekiuPavadinimai[i]
+                 << right
+                 << setw(12) << vienetoKainos[i]
+                 << setw(10) << uzsakytiKiekiai[i]
+                 << setw(14) << suma
+                 << setw(14) << nuolaida
+                 << setw(14) << moketi << endl;
     }
 
-        isvestis << "Bendra uzsakymo suvestine:" << endl;
-        perziuretiUzsakymoSumas(isvestis, vienetoKainos, uzsakytiKiekiai, prekiuSkaicius);
-        isvestis << "------------------------" << endl;
-        isvestis << "Sumos pagal kategorijas:" << endl;
-        perziuretiKategorijosSumas(isvestis, kategorijos, vienetoKainos, uzsakytiKiekiai, prekiuSkaicius);
+        isvestis << string(135, '-') << endl;
+        isvestis << endl;
+        isvestis << "BENDRA:" << endl;
+
+        perziuretiUzsakymoSumas(isvestis, vienetoKainos,
+                                uzsakytiKiekiai, prekiuSkaicius);
+
+        isvestis << endl;
+        isvestis << "PAGAL KATEGORIJAS:" << endl;
+
+        perziuretiKategorijosSumas(isvestis, kategorijos,
+                                vienetoKainos, uzsakytiKiekiai,
+                                prekiuSkaicius);
 }
 
 void IssaugotiFaila ()
