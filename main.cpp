@@ -214,6 +214,32 @@ void perziuretiKategorijosSumas (string kategorijos[], double vienetoKainos[], i
     cout << "Aksesuaru galutine suma: " << aksesuarai << " Eur." << endl;
 }
 
+void parodytiUzsakymoAtaskaita (string kategorijos[], string prekiuPavadinimai[], double vienetoKainos[], int uzsakytiKiekiai[], int prekiuSkaicius)
+{
+    cout << fixed << setprecision(2);
+
+    for (int i = 0; i < prekiuSkaicius; i++)
+    {
+        cout << "PREKES NR. " << i + 1 << endl;
+        cout << "Kategorija: " << kategorijos[i] << endl;
+        cout << "Pavadinimas: " << prekiuPavadinimai[i] << endl;
+        cout << "Vieneto kaina: " << vienetoKainos[i] << " Eur." << endl;
+        cout << "Uzsakytas kiekis: " << uzsakytiKiekiai[i] << endl;
+        double suma = eilutesSuma(vienetoKainos[i],uzsakytiKiekiai[i]);
+        cout << "Eilutes suma: " << suma << " Eur." << endl;
+        double nuolaida = apskaiciuotiNuolaida(suma,uzsakytiKiekiai[i]);
+        cout << "Pritaikyta nuolaida: " << nuolaida << " Eur." << endl;
+        cout << "Galutine suma: " << suma - nuolaida << " Eur." << endl;
+        cout << "------------------------" << endl;
+    }
+
+        cout << "Bendra uzsakymo suvestine:" << endl;
+        perziuretiUzsakymoSumas(vienetoKainos, uzsakytiKiekiai, prekiuSkaicius);
+        cout << "------------------------" << endl;
+        cout << "Sumos pagal kategorijas:" << endl;
+        perziuretiKategorijosSumas(kategorijos, vienetoKainos, uzsakytiKiekiai, prekiuSkaicius);
+}
+
 void rodytiMeniu()
 {
     cout << "\n========== DVIRACIU PARDUOTUVE ==========\n"
@@ -265,7 +291,7 @@ int main ()
             break;
 
             case 5:
-            cout << "5.\n";
+            parodytiUzsakymoAtaskaita(kategorijos, prekiuPavadinimai, vienetoKainos, uzsakytiKiekiai, prekiuSkaicius);
             break;
 
             case 6:
