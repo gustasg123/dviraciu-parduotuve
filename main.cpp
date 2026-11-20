@@ -281,8 +281,6 @@ void IssaugotiFaila (string kategorijos[], string prekiuPavadinimai[], double vi
 
     parodytiUzsakymoAtaskaita(ataskaita, kategorijos, prekiuPavadinimai, vienetoKainos, uzsakytiKiekiai, prekiuSkaicius);
 
-    ataskaita.close();
-
     if (ataskaita.good())
     {
         cout << "Ataskaita issaugota!" << endl;
@@ -291,6 +289,9 @@ void IssaugotiFaila (string kategorijos[], string prekiuPavadinimai[], double vi
     {
         cout << "Klaida issaugant ataskaita!" << endl;
     }
+
+    ataskaita.close();
+
 }
 
 void rodytiMeniu()
@@ -325,8 +326,24 @@ int main ()
     do {
         rodytiMeniu();
 
-        cout << "Pasirinkite veiksma (1-7): ";
-        cin >> pasirinkimas;
+        do {
+            cout << "Pasirinkite veiksma (1-7): ";
+            cin >> pasirinkimas;
+
+            if (cin.fail())
+            {
+                cout << "Klaida! Iveskite skaiciu." << endl;
+
+                cin.clear();
+                cin.ignore(1000, '\n');
+            }
+            else if (pasirinkimas < 1 || pasirinkimas > 7)
+            {
+                cout << "Klaida: Iveskite skaiciu nuo 1 iki 7" << endl;
+            }
+
+        } while (pasirinkimas < 1 || pasirinkimas > 7);
+
         
         cout << endl;
 
